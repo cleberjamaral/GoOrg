@@ -3,7 +3,7 @@ package organisation.goal;
 import java.util.ArrayList;
 import java.util.List;
 
-import annotations.Coordinates;
+import annotations.Feature;
 import organisation.exception.CircularReference;
 
 /**
@@ -16,7 +16,7 @@ public class GoalNode {
 	private GoalNode parent;
 	private String operator;
 	private List<GoalNode> descendants = new ArrayList<>();
-	private List<Coordinates> coordinates = new ArrayList<>();
+	private List<Feature> features = new ArrayList<>();
 
 	public GoalNode(GoalNode p, String name) {
 		goalName = name;
@@ -31,25 +31,19 @@ public class GoalNode {
 		}
 	}
 
-	public void addCoordinates(Coordinates coordinates) {
-		Coordinates w = getCoordinates(coordinates.getId());
-		if (w != null) {
-			w.setX((double) w.getX() + (double) coordinates.getX());
-			w.setY((double) w.getY() + (double) coordinates.getY());
-		} else {
-			this.coordinates.add(coordinates);
-		}
+	public void addFeature(Feature feature) {
+		this.features.add(feature);
 	}
 	
-	public Coordinates getCoordinates(String id) {
-		for (Coordinates w : coordinates) 
+	public Feature getFeature(String id) {
+		for (Feature w : features) 
 			if (w.getId().equals(id)) return w;
 		
 		return null;
 	}
 	
-	public List<Coordinates> getCoordinates() {
-		return coordinates;
+	public List<Feature> getFeatures() {
+		return features;
 	}
 	
 	public void addDescendant(GoalNode newDescendent) {
@@ -94,8 +88,8 @@ public class GoalNode {
 		this.operator = op;
 	}
 	
-	public boolean containsWorkload() {
-		return (this.getCoordinates().size() > 0);
+	public boolean containsFeature() {
+		return (this.getFeatures().size() > 0);
 	}
 	
 	public String toString() {
@@ -105,8 +99,8 @@ public class GoalNode {
 	public GoalNode cloneContent() throws CircularReference {
 		GoalNode clone = new GoalNode(null, this.goalName);
 		
-		for (Coordinates w : getCoordinates()) 
-			clone.addCoordinates(w.clone());
+		for (Feature w : getFeatures()) 
+			clone.addFeature(w.clone());
 
 		clone.operator = this.operator;
 		

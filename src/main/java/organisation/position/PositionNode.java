@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import annotations.Coordinates;
+import annotations.Feature;
 import fit.Requirement;
 import organisation.goal.GoalNode;
 
@@ -23,7 +23,7 @@ public class PositionNode implements Requirement {
 
 	private PositionNode parent;
 	private List<PositionNode> descendants = new ArrayList<>();
-	private Set<Coordinates> workloads = new HashSet<>();
+	private Set<Feature> features = new HashSet<>();
 	private Set<GoalNode> assignedGoals = new HashSet<>();
 
 
@@ -32,13 +32,8 @@ public class PositionNode implements Requirement {
 		this.positionName = positionName;
 	}
 	
-	public void addWorkload(Coordinates workload) {
-		Coordinates w = getWorkload(workload.getId());
-		if (w != null) {
-			w.setX((double) w.getX() + (double) workload.getX());
-		} else {
-			this.workloads.add(workload);
-		}
+	public void addFeature(Feature feature) {
+		this.features.add(feature);
 	}
 
 	public void setType(String type) {
@@ -49,22 +44,11 @@ public class PositionNode implements Requirement {
 		return this.type;
 	}
 
-	public Coordinates getWorkload(String id) {
-		for (Coordinates w : this.workloads) 
+	public Feature getFeature(String id) {
+		for (Feature w : this.features) 
 			if (w.getId().equals(id)) return w;
 		
 		return null;
-	}
-	
-	public Set<Coordinates> getWorkloads() {
-		return this.workloads;
-	}
-
-	public double getSumWorkload() {
-		double sumEfforts = 0;
-		for (Coordinates w : getWorkloads())
-			sumEfforts += (double) w.getX();
-		return sumEfforts;
 	}
 	
 	public void assignGoal(GoalNode g) {
@@ -161,8 +145,8 @@ public class PositionNode implements Requirement {
 		// parent is resolved by its cloned source parent's name
 		clone.setParentName(getParentName());
 		clone.setType(this.type);
-		for (Coordinates w : getWorkloads()) 
-			clone.addWorkload(w.clone());
+		for (String w : getFeatures()) 
+			clone.addFeature(getFeature(w).clone());
 
 		for (GoalNode goal : getAssignedGoals()) 
 			if (!clone.getAssignedGoals().contains(goal)) 
@@ -211,9 +195,9 @@ public class PositionNode implements Requirement {
 
 	@Override
 	public Set<String> getFeatures() {
-		Set<String> features = new HashSet<>();
-		getWorkloads().forEach(w -> {features.add(w.getId());});
-		return features;
+		Set<String> strings = new HashSet<>();
+		features.forEach(w -> {strings.add(w.getId());});
+		return strings;
 	}
 
 	@Override

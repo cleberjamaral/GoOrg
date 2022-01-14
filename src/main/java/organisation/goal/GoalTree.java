@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import annotations.Coordinates;
+import annotations.Feature;
 import organisation.exception.CircularReference;
 
 /**
@@ -16,7 +16,6 @@ public class GoalTree {
 	private static GoalTree instance = null;
     private GoalNode rootNode;
     private Set<GoalNode> tree = new HashSet<>();
-    Set<Coordinates> allDiffWorkloads = new HashSet<>();
     Set<String> allOriginalGoals = new HashSet<>();
 
     private GoalTree() {}
@@ -118,8 +117,7 @@ public class GoalTree {
      * @throws CircularReference
      */
     public void addGoal(String name, String parent, double reportAmount) throws CircularReference {
-        GoalNode parentGoal = findAGoalByName(this.rootNode, parent);
-        GoalNode g = addGoal(name, parentGoal);
+        addGoal(name, findAGoalByName(this.rootNode, parent));
     }
 
     /**

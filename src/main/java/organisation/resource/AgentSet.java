@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import annotations.Coordinates;
+import annotations.Feature;
 import fit.Resource;
 import fit.ResourceSet;
 
@@ -37,25 +37,19 @@ public class AgentSet implements ResourceSet {
 		availableAgents.add(agent);
 	}
 
-	public void addAgent(String name, String[] skills) {
+	public void addAgent(String name, String id_annotation) {
 		Agent agent = new Agent(name);
-		for (int i = 0; i < skills.length; i++) {
-			Coordinates skill = new Coordinates(skills[i],0,0);
-			agent.addCoordinate(skill);
-		}
+		agent.addFeature(new Feature(id_annotation));
 		
 		availableAgents.add(agent);
 	}
 	
-	public void addSkillsToAgent(String name, String[] skills) {
+	public void addAnnotationToAgent(String name, String annotation) {
 		Iterator<Agent> ag = availableAgents.iterator();
 		while (ag.hasNext()) {
 			Agent agent = ag.next();
 			if (agent.getName().equals(name)) {
-				for (int i = 0; i < skills.length; i++) {
-					Coordinates skill = new Coordinates(skills[i],0,0);
-					agent.addCoordinate(skill);
-				}
+				agent.addFeature(new Feature(annotation));
 				break;
 			}
 		}

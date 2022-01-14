@@ -55,9 +55,12 @@ public class OrganisationApp {
 
 			// set available agents for this example
 			AgentSet agents = AgentSet.getInstance();
-			agents.addAgent("bob", new String[]{"w0"});
-			agents.addAgent("alice", new String[]{"w1"});
-			agents.addAgent("tom", new String[]{"w1"});
+			agents.addAgent("device_05_05", new String("05,05"));
+			agents.addAgent("device_05_15", new String("05,15"));
+			agents.addAgent("device_05_25", new String("05,25"));
+			agents.addAgent("device_15_05", new String("15,05"));
+			agents.addAgent("device_15_15", new String("15,15"));
+			agents.addAgent("device_15_25", new String("15,25"));
 
 			// bind agents and positions
 			orgBin.bindOrganisations(org, agents);

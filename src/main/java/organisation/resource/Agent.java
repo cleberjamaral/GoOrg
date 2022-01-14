@@ -3,7 +3,7 @@ package organisation.resource;
 import java.util.HashSet;
 import java.util.Set;
 
-import annotations.Coordinates;
+import annotations.Feature;
 import fit.Resource;
 
 /**
@@ -12,7 +12,7 @@ import fit.Resource;
  */
 public class Agent implements Resource {
 	private String name;
-	private Set<Coordinates> coordinates = new HashSet<>();
+	private Set<Feature> features = new HashSet<>();
 
 	public Agent(String name) {
 		this.name = name;
@@ -26,16 +26,12 @@ public class Agent implements Resource {
 		this.name = name;
 	}
 
-	public Set<Coordinates> getCoordinates() {
-		return coordinates;
-	}
-
-	public void addCoordinate(Coordinates Coordinate) {
-		coordinates.add(Coordinate);
+	public void addFeature(Feature feature) {
+		features.add(feature);
 	}
 	
 	public String toString() {
-		return this.name + " " + coordinates;
+		return this.name + " " + features;
 	}
 	
 	@Override
@@ -65,9 +61,9 @@ public class Agent implements Resource {
 
 	@Override
 	public Set<String> getFeatures() {
-		Set<String> features = new HashSet<>();
-		coordinates.forEach(s -> {features.add(s.getId());});
-		return features;
+		Set<String> ids = new HashSet<>();
+		features.forEach(s -> {ids.add(s.getId());});
+		return ids;
 	}
 
 	@Override
